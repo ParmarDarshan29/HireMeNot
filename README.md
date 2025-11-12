@@ -4,6 +4,10 @@
 
 A humorous Django web application that uses AI to roast resumes in a fun, meme-style interface. Upload your resume and get savage (but friendly) feedback from our AI comedian!
 
+## 🌐 Live Demo
+
+**Check it out live**: [https://hiremenot.onrender.com](https://hiremenot.onrender.com)
+
 ## Features
 
 - **Resume Upload**: Support for PDF files or plain text input
