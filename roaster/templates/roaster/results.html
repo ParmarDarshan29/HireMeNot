@@ -18,10 +18,48 @@
         text-shadow: 0 0 10px rgba(165, 255, 144, 0.5);
     }
     
+    @media (max-width: 768px) {
+        .results-header h1 {
+            font-size: 2.5rem;
+        }
+        
+        .results-header p {
+            font-size: 1rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .results-header {
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .results-header h1 {
+            font-size: 2rem;
+        }
+        
+        .results-header p {
+            font-size: 0.9rem;
+        }
+    }
+    
     .roast-text {
         font-size: 1.1rem;
         line-height: 1.8;
         color: var(--text-primary);
+    }
+    
+    @media (max-width: 768px) {
+        .roast-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .roast-text {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
     }
     
     .alert-info {
@@ -36,19 +74,140 @@
         font-weight: 700;
     }
     
+    @media (max-width: 768px) {
+        .alert-info {
+            border-radius: 10px;
+        }
+        
+        .alert-info .alert-heading {
+            font-size: 1rem;
+        }
+        
+        .alert-info p {
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .alert-info {
+            border-radius: 8px;
+            padding: 0.75rem;
+        }
+        
+        .alert-info .alert-heading {
+            font-size: 0.9rem;
+        }
+        
+        .alert-info p {
+            font-size: 0.8rem;
+        }
+    }
+    
     .stamp img {
         filter: drop-shadow(0 0 20px var(--neon-red));
     }
     
+    .stamp {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        transform: rotate(-15deg);
+        opacity: 0;
+        animation: stamp 0.5s ease-out 0.5s forwards;
+    }
+    
+    @media (max-width: 768px) {
+        .stamp {
+            top: 15px;
+            right: 15px;
+        }
+        
+        .stamp img {
+            width: 120px;
+            height: 120px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .stamp {
+            top: 10px;
+            right: 10px;
+        }
+        
+        .stamp img {
+            width: 80px;
+            height: 80px;
+        }
+    }
+    
     .border-top {
         border-color: var(--blood-red) !important;
+    }
+    
+    /* Roast Box Title Responsive */
+    .roast-box h3 {
+        font-size: 1.75rem;
+    }
+    
+    @media (max-width: 768px) {
+        .roast-box h3 {
+            font-size: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .roast-box h3 {
+            font-size: 1.25rem;
+        }
+    }
+    
+    /* Card Title Responsive */
+    .card-title a {
+        font-size: 1.25rem;
+    }
+    
+    @media (max-width: 768px) {
+        .card-title {
+            font-size: 1rem;
+        }
+        
+        .card-title a {
+            font-size: 1rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .card-title {
+            font-size: 0.9rem;
+        }
+        
+        .card-title a {
+            font-size: 0.9rem;
+        }
+    }
+    
+    /* Pre tag for resume text */
+    pre {
+        overflow-x: auto;
+    }
+    
+    @media (max-width: 768px) {
+        pre {
+            font-size: 0.85rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        pre {
+            font-size: 0.75rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="row justify-content-center fade-in">
-    <div class="col-lg-10">
+    <div class="col-lg-10 col-md-11 col-12">
         <!-- Header -->
         <div class="text-center mb-4 results-header">
             <h1 class="display-4">
@@ -89,7 +248,7 @@
         
         <!-- Action Buttons -->
         <div class="row mt-5 g-3">
-            <div class="col-md-4 col-6">
+            <div class="col-md-4 col-sm-6 col-12">
                 <form method="post" action="{% url 'roast_again' roast.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-fire w-100">
@@ -97,12 +256,12 @@
                     </button>
                 </form>
             </div>
-            <div class="col-md-4 col-6">
+            <div class="col-md-4 col-sm-6 col-12">
                 <button class="btn btn-secondary w-100" onclick="shareOnTwitter()">
                     Share
                 </button>
             </div>
-            <div class="col-md-4 col-6">
+            <div class="col-md-4 col-sm-12 col-12">
                 <a href="{% url 'home' %}" class="btn btn-secondary w-100">
                     Home
                 </a>

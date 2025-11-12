@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: hiremenot
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn hiremenot.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: WEB_CONCURRENCY
+        value: 4
