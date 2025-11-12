@@ -31,7 +31,16 @@ SECRET_KEY = os.environ.get('SECRET_KEY', "django-insecure-1ohj71w53((&51=m%ka)!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allow Render.com and localhost
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', 
+    'localhost,127.0.0.1,hiremenot.onrender.com,.onrender.com'
+).split(',')
+
+# Add render.com wildcard for preview environments
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -144,3 +153,18 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CSRF Settings for production
+CSRF_TRUSTED_ORIGINS = [
+    'https://hiremenot.onrender.com',
+    'https://*.onrender.com',
+]
+
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
