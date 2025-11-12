@@ -3,7 +3,7 @@ services:
     name: hiremenot
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn hiremenot.wsgi:application"
+    startCommand: "gunicorn hiremenot.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.0
