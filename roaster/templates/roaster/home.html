@@ -1,0 +1,259 @@
+{% extends 'roaster/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        text-align: center;
+        margin-bottom: 4rem;
+        padding: 3rem 1rem;
+        position: relative;
+    }
+    
+    .hero-section h1 {
+        font-size: 4rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, var(--neon-red), var(--blood-red));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+        animation: none;
+        text-shadow: none;
+    }
+    
+    .hero-tagline {
+        font-size: 1.8rem;
+        color: var(--neon-red);
+        text-shadow: none;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+    
+    .hero-description {
+        color: var(--neon-green);
+        font-size: 1.1rem;
+        text-shadow: none;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .info-card {
+        background: rgba(18, 18, 18, 0.8);
+        border: 1px solid rgba(125, 42, 232, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem;
+        height: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .info-card:hover {
+        border-color: var(--blood-red);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transform: translateY(-3px);
+    }
+    
+    .info-card .display-4 {
+        filter: none;
+    }
+    
+    .info-card h5 {
+        color: var(--neon-red);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .info-card p {
+        color: var(--text-primary);
+    }
+    
+    .nav-tabs {
+        border-bottom: 2px solid var(--blood-red);
+    }
+    
+    .nav-tabs .nav-link {
+        background: rgba(18, 18, 18, 0.6);
+        border: 2px solid var(--glow-purple);
+        color: var(--neon-green);
+        font-weight: 600;
+        margin-right: 10px;
+        border-radius: 10px 10px 0 0;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-tabs .nav-link:hover {
+        border-color: var(--neon-red);
+        color: var(--neon-red);
+        box-shadow: 0 0 20px rgba(255, 46, 46, 0.3);
+    }
+    
+    .nav-tabs .nav-link.active {
+        background: rgba(214, 40, 40, 0.2);
+        border-color: var(--blood-red);
+        color: var(--neon-red);
+        box-shadow: 0 0 30px rgba(255, 46, 46, 0.5);
+    }
+    
+    .form-label {
+        color: var(--neon-red);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+    
+    .form-text {
+        color: var(--neon-green);
+        font-size: 0.85rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center fade-in">
+    <div class="col-lg-8">
+        <!-- Monster GIF Banner -->
+        <div class="text-center mb-5">
+            <img src="{% static 'roaster/images/hellmonster.gif' %}" alt="Hell Monster" class="img-fluid" style="max-width: 600px; max-height: 400px; width: 100%; height: auto; object-fit: contain; border-radius: 15px; box-shadow: 0 10px 40px rgba(214, 40, 40, 0.5);">
+        </div>
+        
+        <!-- Upload Form -->
+        <div class="card pulse">
+            <div class="card-body p-4">
+                <h3 class="card-title mb-4 text-center">
+                    Ready to Get Roasted?
+                </h3>
+                
+                <form method="post" action="{% url 'upload_resume' %}" enctype="multipart/form-data" id="uploadForm">
+                    {% csrf_token %}
+                    
+                    <!-- Tab Selection -->
+                    <ul class="nav nav-tabs mb-4" id="uploadTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pdf-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#pdf-upload" type="button" role="tab">
+                                Upload PDF
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="text-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#text-input" type="button" role="tab">
+                                Paste Text
+                            </button>
+                        </li>
+                    </ul>
+                    
+                    <!-- Tab Content -->
+                    <div class="tab-content" id="uploadTabContent">
+                        <!-- PDF Upload -->
+                        <div class="tab-pane fade show active" id="pdf-upload" role="tabpanel">
+                            <div class="mb-4">
+                                <label for="resume_file" class="form-label">
+                                    Choose your resume (PDF only)
+                                </label>
+                                <input type="file" class="form-control" id="resume_file" 
+                                       name="resume_file" accept=".pdf">
+                                <div class="form-text">
+                                    Max file size: 5MB. We'll extract the text and roast it!
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Text Input -->
+                        <div class="tab-pane fade" id="text-input" role="tabpanel">
+                            <div class="mb-4">
+                                <label for="resume_text" class="form-label">
+                                    Paste your resume text
+                                </label>
+                                <textarea class="form-control" id="resume_text" name="resume_text" 
+                                          rows="8" placeholder="Paste your resume here... Don't be shy!"></textarea>
+                                <div class="form-text">
+                                    Minimum 50 characters, maximum 10,000 characters.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-fire btn-lg">
+                            Roast My Resume!
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Info Cards -->
+        <div class="row mt-5">
+            <div class="col-md-4 mb-3">
+                <div class="info-card text-center">
+                    <div class="display-4 mb-3"></div>
+                    <h5>AI-Powered</h5>
+                    <p class="small">
+                        Our AI will roast your resume. Don't be shy, give it a try!
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="info-card text-center">
+                    <div class="display-4 mb-3"></div>
+                    <h5>Funny AF</h5>
+                    <p class="small">
+                        We keep it light, sarcastic, and meme-worthy!
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="info-card text-center">
+                    <div class="display-4 mb-3"></div>
+                    <h5>Actually Useful</h5>
+                    <p class="small">
+                        Hidden in the humor are real insights. Maybe.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Form validation
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        const fileInput = document.getElementById('resume_file');
+        const textInput = document.getElementById('resume_text');
+        const activeTab = document.querySelector('#uploadTabs .nav-link.active').id;
+        
+        if (activeTab === 'pdf-tab') {
+            if (!fileInput.files.length) {
+                e.preventDefault();
+                alert('Please select a PDF file to upload!');
+                return;
+            }
+        } else {
+            if (!textInput.value.trim()) {
+                e.preventDefault();
+                alert('Please paste your resume text!');
+                return;
+            }
+        }
+    });
+    
+    // Clear other input when switching tabs
+    document.querySelectorAll('#uploadTabs button').forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.id === 'pdf-tab') {
+                document.getElementById('resume_text').value = '';
+            } else {
+                document.getElementById('resume_file').value = '';
+            }
+        });
+    });
+</script>
+{% endblock %}

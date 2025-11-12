@@ -1,0 +1,170 @@
+{% extends 'roaster/base.html' %}
+
+{% block title %}Roast Results - HireMeNot{% endblock %}
+
+{% block extra_css %}
+<style>
+    .results-header h1 {
+        background: linear-gradient(135deg, var(--neon-red), var(--hellfire-orange));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 900;
+        text-shadow: none;
+    }
+    
+    .results-header p {
+        color: var(--neon-green);
+        text-shadow: 0 0 10px rgba(165, 255, 144, 0.5);
+    }
+    
+    .roast-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+    }
+    
+    .alert-info {
+        background: rgba(125, 42, 232, 0.1);
+        border: 2px solid var(--glow-purple);
+        color: var(--neon-green);
+        border-radius: 15px;
+    }
+    
+    .alert-info .alert-heading {
+        color: var(--neon-red);
+        font-weight: 700;
+    }
+    
+    .stamp img {
+        filter: drop-shadow(0 0 20px var(--neon-red));
+    }
+    
+    .border-top {
+        border-color: var(--blood-red) !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center fade-in">
+    <div class="col-lg-10">
+        <!-- Header -->
+        <div class="text-center mb-4 results-header">
+            <h1 class="display-4">
+                You've Been Roasted!
+            </h1>
+            <p class="lead">
+                Brace yourself... the AI held nothing back.
+            </p>
+        </div>
+        
+        <!-- Roast Box -->
+        <div class="roast-box fade-in">
+            <div class="stamp">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Ctext x='50%25' y='50%25' font-size='20' font-weight='bold' fill='%23ff6b35' text-anchor='middle' dominant-baseline='middle' transform='rotate(-15 75 75)'%3EREJECTED!%3C/text%3E%3Ccircle cx='75' cy='75' r='60' fill='none' stroke='%23ff6b35' stroke-width='4'/%3E%3C/svg%3E" alt="Rejected Stamp">
+            </div>
+            
+            <h3 class="mb-4">
+                RoastBot Says:
+            </h3>
+            
+            <div class="roast-text" style="font-size: 1.1rem; line-height: 1.8;">
+                {{ roast.roast_text|linebreaks }}
+            </div>
+            
+            <div class="mt-4 pt-3 border-top border-secondary">
+                <small class="text-muted">
+                    Roasted on {{ roast.timestamp|date:"F d, Y \a\t g:i A" }}
+                </small>
+            </div>
+        </div>
+        
+        <!-- Meme Section -->
+        {% if meme_url %}
+        <div class="meme-container fade-in">
+            <img src="{{ meme_url }}" alt="Funny meme" class="img-fluid">
+        </div>
+        {% endif %}
+        
+        <!-- Action Buttons -->
+        <div class="row mt-5 g-3">
+            <div class="col-md-4 col-6">
+                <form method="post" action="{% url 'roast_again' roast.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-fire w-100">
+                        Roast Again
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4 col-6">
+                <button class="btn btn-secondary w-100" onclick="shareOnTwitter()">
+                    Share
+                </button>
+            </div>
+            <div class="col-md-4 col-6">
+                <a href="{% url 'home' %}" class="btn btn-secondary w-100">
+                    Home
+                </a>
+            </div>
+        </div>
+        
+        <!-- Resume Preview (Collapsible) -->
+        <div class="card mt-5">
+            <div class="card-body">
+                <h5 class="card-title mb-3">
+                    <a class="text-decoration-none" data-bs-toggle="collapse" href="#resumeCollapse" 
+                       role="button" aria-expanded="false" aria-controls="resumeCollapse">
+                        View Original Resume 
+                        <small class="text-muted">(click to expand)</small>
+                    </a>
+                </h5>
+                
+                <div class="collapse" id="resumeCollapse">
+                    <div class="bg-dark p-3 rounded">
+                        <pre class="text-muted mb-0" style="white-space: pre-wrap; font-size: 0.9rem;">{{ roast.resume_text }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fun Facts -->
+        <div class="alert alert-info mt-4 fade-in">
+            <h6 class="alert-heading">💡 Did You Know?</h6>
+            <p class="mb-0 small">
+                The average recruiter spends just 6 seconds looking at a resume. 
+                Good thing our AI took longer to roast yours! 😏
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Share on Twitter/X
+    function shareOnTwitter() {
+        const text = "My resume just got roasted by AI at HireMeNot!";
+        const url = window.location.href;
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        window.open(twitterUrl, '_blank', 'width=600,height=400');
+    }
+    
+    // Easter egg: Konami code for extra animation
+    let konamiCode = [];
+    const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+    
+    document.addEventListener('keydown', function(e) {
+        konamiCode.push(e.keyCode);
+        if (konamiCode.length > 10) konamiCode.shift();
+        
+        if (konamiCode.join(',') === konamiSequence.join(',')) {
+            document.querySelector('.roast-box').style.animation = 'glow 0.5s linear infinite';
+            setTimeout(() => {
+                document.querySelector('.roast-box').style.animation = '';
+            }, 3000);
+        }
+    });
+</script>
+{% endblock %}
