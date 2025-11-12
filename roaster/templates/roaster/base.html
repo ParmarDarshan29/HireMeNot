@@ -601,6 +601,46 @@
             }
         }
         
+        /* Developer Button */
+        .developer-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--glow-purple), var(--neon-red));
+            border: 1px solid var(--neon-green);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 15px rgba(125, 42, 232, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .developer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(125, 42, 232, 0.6);
+            color: white;
+            border-color: var(--neon-red);
+        }
+        
+        @media (max-width: 768px) {
+            .developer-btn {
+                padding: 8px 20px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .developer-btn {
+                padding: 6px 16px;
+                font-size: 0.8rem;
+                letter-spacing: 0.5px;
+            }
+        }
+        
         /* Footer Responsive */
         .footer {
             background: linear-gradient(180deg, var(--bg-dark) 0%, #1a0505 100%);
@@ -692,6 +732,11 @@
             <p class="mb-0 small mt-2" style="color: var(--neon-green);">
                 This is satire. All roasts are AI-generated for entertainment purposes only.
             </p>
+            <div class="mt-3">
+                <a href="https://parmardarshan29.github.io/#/about" target="_blank" rel="noopener noreferrer" class="developer-btn">
+                    👨‍💻 About Developer
+                </a>
+            </div>
         </div>
     </footer>
     
